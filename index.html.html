@@ -1,0 +1,1015 @@
+
+<!-- saved from url=(0047)file:///C:/Users/Edgar/Downloads/Something.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something</title>
+    <link href="./asd_files/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./asd_files/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            background: #000;
+            font-family: Georgia, serif;
+        }
+
+        .webgl {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+
+        /* Floating CSS hearts in background */
+        .heart {
+            position: absolute;
+            color: rgba(255, 100, 100, 0.15);
+            font-size: 24px;
+            animation: float 15s infinite ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+                opacity: 0.7;
+            }
+        }
+
+        .credits {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-family: 'Pacifico', cursive;
+            font-size: 16px;
+            text-align: center;
+            text-shadow: 
+                0 0 3px #fff,
+                0 0 6px #fff,
+                0 0 10px #ff6030,
+                0 0 15px #ff6030;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .instructions {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: Georgia, serif;
+            font-size: 14px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        
+        /* Menú de configuración */
+        .menu-button {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 20;
+            backdrop-filter: blur(5px);
+        }
+        
+        .menu-button span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: white;
+            margin: 2px 0;
+            border-radius: 1px;
+        }
+        
+        .config-panel {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 15;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            border-right: 1px solid rgba(255, 96, 48, 0.3);
+        }
+        
+        .config-panel.open {
+            left: 0;
+        }
+        
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .config-title {
+            color: white;
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .config-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(30, 30, 40, 0.6);
+            border-radius: 15px;
+        }
+        
+        .config-section h3 {
+            color: #ff6030;
+            margin-bottom: 15px;
+            font-family: 'Pacifico', cursive;
+            font-size: 20px;
+        }
+        
+        .config-option {
+            margin-bottom: 12px;
+        }
+        
+        .config-option label {
+            display: block;
+            color: white;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .config-option input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .config-option input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff6030;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #ff6030;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.15);
+        }
+        
+        .developer-info {
+            margin-top: auto;
+            padding: 20px;
+            background: rgba(20, 20, 30, 0.8);
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 96, 48, 0.3);
+        }
+        
+        .developer-info h3 {
+            color: #ff6030;
+            margin-bottom: 10px;
+            font-family: 'Pacifico', cursive;
+            font-size: 20px;
+        }
+        
+        .developer-info p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.2s;
+            font-size: 15px;
+        }
+        
+        .whatsapp-link:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+        
+        .whatsapp-link i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 14;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .credits { font-size: 14px; bottom: 10px; }
+            .instructions { font-size: 12px; padding: 6px 12px; }
+            .menu-button { top: 10px; left: 10px; width: 36px; height: 36px; }
+            .menu-button span { width: 18px; }
+            .config-panel { width: 280px; padding: 15px; }
+            .config-title { font-size: 20px; }
+            .whatsapp-link { padding: 8px 14px; font-size: 14px; }
+        }
+        
+        @media (max-width: 480px) {
+            .config-panel { width: 100%; left: -100%; }
+            .config-panel.open { left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="webgl" width="1920" height="878" style="touch-action: none; width: 1536px; height: 703px;"></canvas>
+    <div class="instructions">La quiero enana</div>
+    <div class="credits">Edgar</div>
+    
+    <!-- Menú de configuración -->
+    <div class="menu-button" id="menuButton">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="config-panel" id="configPanel">
+        <div class="config-header">
+            <div class="config-title">Configuración</div>
+            <button class="close-button" id="closeButton">✕</button>
+        </div>
+        
+        <div class="config-section">
+            <h3>Corazones Orbitales</h3>
+            <div class="config-option">
+                <label for="heartSize">Tamaño</label>
+                <input type="range" id="heartSize" min="0.3" max="1.2" step="0.1" value="0.8">
+            </div>
+            <div class="config-option">
+                <label for="heartSpeed">Velocidad de rotación</label>
+                <input type="range" id="heartSpeed" min="0" max="1" step="0.05" value="0.25">
+            </div>
+            <div class="config-option">
+                <label>Color principal</label>
+                <div class="color-options">
+                    <div class="color-option active" style="background-color: #FFD700;" data-color="#FFD700"></div>
+                    <div class="color-option" style="background-color: #C7B8EA;" data-color="#C7B8EA"></div>
+                    <div class="color-option" style="background-color: #800080;" data-color="#800080"></div>
+                    <div class="color-option" style="background-color: #0949f0;" data-color="#0949f0"></div>
+                    <div class="color-option" style="background-color: #8a2be2;" data-color="#8a2be2"></div>
+                    <div class="color-option" style="background-color: #01ffff;" data-color="#01ffff"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h3>Corazón Central</h3>
+            <div class="config-option">
+                <label for="centerHeartSize">Tamaño</label>
+                <input type="range" id="centerHeartSize" min="2.0" max="5.0" step="0.2" value="3.2">
+            </div>
+        </div>
+        
+        <div class="config-section">
+            <h3>Fondo Estelar</h3>
+            <div class="config-option">
+                <label for="starBrightness">Brillo de estrellas</label>
+                <input type="range" id="starBrightness" min="0.3" max="1.0" step="0.1" value="0.85">
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3>Opciones Avanzadas</h3>
+            <div class="config-option">
+                <label>Rotación automática</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoRotateToggle" checked="">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="config-option">
+                <label for="textOpacity">Opacidad de textos</label>
+                <input type="range" id="textOpacity" min="0.1" max="1.0" step="0.1" value="0.9">
+            </div>
+        </div>
+        
+        <div class="developer-info">
+            <h3>MR</h3>
+            <p>Se le quiere negra</p>
+            
+            
+            <p style="margin-top: 12px; font-size: 12px; color: rgba(255, 255, 255, 0.6);">
+               And
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from "https://cdn.skypack.dev/three@0.132.2";
+        import { OrbitControls } from "https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js";
+
+        // Create floating CSS hearts
+        function createCSSHearts() {
+            const heartSymbols = ['💛', '👸', '🌷', '💜', '️T', '😘', '❇', '👑'];
+            const container = document.body;
+            const heartCount = 30;
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${16 + Math.random() * 20}px`;
+                heart.style.animationDelay = `${Math.random() * 15}s`;
+                container.appendChild(heart);
+            }
+        }
+        createCSSHearts();
+
+        const canvas = document.querySelector('canvas.webgl');
+        const scene = new THREE.Scene();
+
+        const romanticPhrases = [
+            "Se le quiere 💛", " Don't stay sad ", "Have fun of the life", " you're beatiful right 🌸",
+            "Idk what put here", "hope this give u a lil happy ☀️", "My bad for picked u off lol", "los peces tienen sed? ",
+            "Wanna play a game? 🌺", "I want to play with u but Idk what", 
+            "Who's the most beatiful negra? ", "I'm bored", "⭐ You're a star ⭐", "Ete sech", "Que joyita 💎",
+            "i don't remember ur birthday date 🎁", "by the way what's ur fav colors? ",
+            "it's time to you tell me ur birthday date negra I forget it :c ♾️", "jazyy u remember how we know us? lol 💍"
+        ];
+
+        const parameters = {
+            heartCount: 16,
+            particlesPerHeart: 1000,
+            heartSize: 0.8,
+            heartSizeVariation: 0.2,
+            insideColor: '#ff0055',
+            outsideColor: '#ff3088',
+            centerHeartSize: 3.2,
+            centerHeartParticles: 3000,
+            nucleusParticles: 800,
+            heartCoreParticles: 100,
+            autoRotateSpeed: 0.25,
+            starOpacity: 0.85,
+            textOpacity: 0.9,
+            autoRotate: true
+        };
+
+        let textSprites = [];
+        let heartStructures = [];
+        let centerHeart = null;
+        let nucleusParticles = null;
+        let starfield = null;
+        let heartCoreSystems = [];
+        let heartTexts = [];
+
+        const createTextSprite = (text) => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 700;
+            canvas.height = 250;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.font = 'Bold 32px Georgia';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, parameters.insideColor);
+            gradient.addColorStop(0.5, '#ffffff');
+            gradient.addColorStop(1, parameters.outsideColor);
+            context.fillStyle = gradient;
+            context.shadowColor = '#ffffff';
+            context.shadowBlur = 15;
+            context.fillText(text, canvas.width / 2, canvas.height / 2);
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ 
+                map: texture,
+                color: 0xffffff,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                opacity: parameters.textOpacity
+            });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(0.55, 0.14, 1);
+            return sprite;
+        };
+
+        const createCenterHeartText = () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 512;
+            canvas.height = 128;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.font = 'Bold 60px Pacifico';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, '#ff6030');
+            gradient.addColorStop(0.5, '#ffffff');
+            gradient.addColorStop(1, '#0949f0');
+            context.fillStyle = gradient;
+            context.shadowColor = '#ffffff';
+            context.shadowBlur = 25;
+            context.fillText("Negra 💬", canvas.width / 2, canvas.height / 2);
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ 
+                map: texture,
+                color: 0xffffff,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(2.0, 0.5, 1);
+            return sprite;
+        };
+
+        const createHeartText = () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 64;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.font = 'Bold 24px Pacifico';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, '#ff6030');
+            gradient.addColorStop(0.5, '#ffffff');
+            gradient.addColorStop(1, '#0949f0');
+            context.fillStyle = gradient;
+            context.shadowColor = '#ffffff';
+            context.shadowBlur = 12;
+            context.fillText("Reina💛", canvas.width / 2, canvas.height / 2);
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ 
+                map: texture,
+                color: 0xffffff,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(0.7, 0.17, 1);
+            return sprite;
+        };
+
+        const createInvertedHeartGeometry = (size = 1.0, particleCount = 1500) => {
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const colorInside = new THREE.Color(parameters.insideColor);
+            const colorOutside = new THREE.Color(parameters.outsideColor);
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const t = Math.random() * Math.PI * 2;
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                const z = (Math.random() - 0.5) * 3;
+                positions[i3] = (x * size * 0.04) + (Math.random() - 0.5) * size * 0.08;
+                positions[i3 + 1] = (y * size * 0.04) + (Math.random() - 0.5) * size * 0.08;
+                positions[i3 + 2] = z * size * 0.08;
+                const radius = Math.sqrt(x*x + y*y);
+                const maxRadius = 20;
+                const mixedColor = colorInside.clone();
+                mixedColor.lerp(colorOutside, Math.min(radius / maxRadius, 1));
+                mixedColor.offsetHSL(0, 0.5, 0);
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+            }
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            return geometry;
+        };
+
+        const createStarfield = () => {
+            const starCount = 6000;
+            const positions = new Float32Array(starCount * 3);
+            const colors = new Float32Array(starCount * 3);
+            const sizes = new Float32Array(starCount);
+            for (let i = 0; i < starCount; i++) {
+                const i3 = i * 3;
+                const radius = 50 + Math.random() * 150;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+                const colorType = Math.random();
+                if (colorType < 0.7) {
+                    colors[i3] = 1;
+                    colors[i3 + 1] = 1;
+                    colors[i3 + 2] = 1;
+                } else if (colorType < 0.85) {
+                    colors[i3] = 0.7;
+                    colors[i3 + 1] = 0.8;
+                    colors[i3 + 2] = 1;
+                } else {
+                    colors[i3] = 1;
+                    colors[i3 + 1] = 0.9;
+                    colors[i3 + 2] = 0.7;
+                }
+                sizes[i] = 0.2 + Math.random() * 0.4;
+            }
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            const material = new THREE.PointsMaterial({
+                size: 0.8,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: parameters.starOpacity,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const stars = new THREE.Points(geometry, material);
+            return stars;
+        };
+
+        const createNucleusParticles = () => {
+            const particleCount = parameters.nucleusParticles;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            const color1 = new THREE.Color(0xff6030);
+            const color2 = new THREE.Color(0x0949f0);
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const radius = Math.random() * 0.8;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+                const mixedColor = color1.clone();
+                mixedColor.lerp(color2, Math.random());
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+                sizes[i] = 0.02 + Math.random() * 0.03;
+            }
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            const material = new THREE.PointsMaterial({
+                size: 0.03,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const particles = new THREE.Points(geometry, material);
+            return particles;
+        };
+
+        const createHeartCoreParticles = (position) => {
+            const particleCount = parameters.heartCoreParticles;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+            const baseColor = new THREE.Color(
+                0.5 + Math.random() * 0.5,
+                0.5 + Math.random() * 0.5,
+                0.5 + Math.random() * 0.5
+            );
+            const accentColor = new THREE.Color(
+                Math.random(),
+                Math.random(),
+                Math.random()
+            );
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const radius = Math.random() * 0.3;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+                const mixedColor = baseColor.clone();
+                mixedColor.lerp(accentColor, Math.random());
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+                sizes[i] = 0.015 + Math.random() * 0.02;
+            }
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            const material = new THREE.PointsMaterial({
+                size: 0.02,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            const particles = new THREE.Points(geometry, material);
+            particles.position.copy(position);
+            return particles;
+        };
+
+        const generateHearts = () => {
+            textSprites.forEach(sprite => scene.remove(sprite));
+            textSprites = [];
+            heartTexts.forEach(text => scene.remove(text));
+            heartTexts = [];
+            heartStructures.forEach(heart => {
+                heart.geometry.dispose();
+                heart.material.dispose();
+                scene.remove(heart);
+            });
+            heartStructures = [];
+            heartCoreSystems.forEach(core => {
+                core.geometry.dispose();
+                core.material.dispose();
+                scene.remove(core);
+            });
+            heartCoreSystems = [];
+            if (centerHeart) {
+                centerHeart.geometry.dispose();
+                centerHeart.material.dispose();
+                scene.remove(centerHeart);
+            }
+            if (nucleusParticles) {
+                nucleusParticles.geometry.dispose();
+                nucleusParticles.material.dispose();
+                scene.remove(nucleusParticles);
+            }
+
+            for (let i = 0; i < parameters.heartCount; i++) {
+                const heartSize = parameters.heartSize + Math.random() * parameters.heartSizeVariation;
+                const heartGeometry = createInvertedHeartGeometry(heartSize, parameters.particlesPerHeart);
+                const heartMaterial = new THREE.PointsMaterial({
+                    size: 0.025,
+                    sizeAttenuation: true,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.98
+                });
+                const heart = new THREE.Points(heartGeometry, heartMaterial);
+                const radius = 3.8;
+                const angle = (i / parameters.heartCount) * Math.PI * 2;
+                heart.position.set(
+                    Math.cos(angle) * radius,
+                    0,
+                    Math.sin(angle) * radius
+                );
+                scene.add(heart);
+                heartStructures.push(heart);
+                const coreParticles = createHeartCoreParticles(heart.position);
+                scene.add(coreParticles);
+                heartCoreSystems.push(coreParticles);
+                const heartText = createHeartText();
+                heartText.position.copy(heart.position);
+                scene.add(heartText);
+                heartTexts.push(heartText);
+            }
+
+            const centerHeartGeometry = createInvertedHeartGeometry(parameters.centerHeartSize, parameters.centerHeartParticles);
+            const centerHeartMaterial = new THREE.PointsMaterial({
+                size: 0.032,
+                sizeAttenuation: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.99
+            });
+            centerHeart = new THREE.Points(centerHeartGeometry, centerHeartMaterial);
+            centerHeart.position.set(0, 0, 0);
+            scene.add(centerHeart);
+
+            nucleusParticles = createNucleusParticles();
+            scene.add(nucleusParticles);
+
+            const centerText = createCenterHeartText();
+            centerText.position.set(0, 0.3, 0);
+            scene.add(centerText);
+            textSprites.push(centerText);
+
+            const wordCount = 160;
+            for (let i = 0; i < wordCount; i++) {
+                const phrase = romanticPhrases[i % romanticPhrases.length];
+                const radius = 2.0 + Math.random() * 4.0;
+                const angle = Math.random() * Math.PI * 2;
+                const height = (Math.random() - 0.5) * 3.5;
+                const sprite = createTextSprite(phrase);
+                sprite.position.set(
+                    Math.cos(angle) * radius,
+                    height,
+                    Math.sin(angle) * radius
+                );
+                scene.add(sprite);
+                textSprites.push(sprite);
+            }
+        };
+
+        starfield = createStarfield();
+        scene.add(starfield);
+        generateHearts();
+
+        const sizes = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+
+        window.addEventListener('resize', () => {
+            sizes.width = window.innerWidth;
+            sizes.height = window.innerHeight;
+            camera.aspect = sizes.width / sizes.height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(sizes.width, sizes.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+
+        const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 200);
+        camera.position.set(9, 5, 9);
+        scene.add(camera);
+
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = parameters.autoRotate;
+        controls.autoRotateSpeed = parameters.autoRotateSpeed;
+        controls.enableZoom = true;
+        controls.enablePan = false;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true
+        });
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 1);
+
+        // Menú interacción
+        const menuButton = document.getElementById('menuButton');
+        const configPanel = document.getElementById('configPanel');
+        const closeButton = document.getElementById('closeButton');
+        const overlay = document.getElementById('overlay');
+
+        menuButton.addEventListener('click', () => {
+            configPanel.classList.add('open');
+            overlay.classList.add('active');
+        });
+
+        [closeButton, overlay].forEach(el => {
+            el.addEventListener('click', () => {
+                configPanel.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // Controles
+        document.getElementById('heartSize').addEventListener('input', (e) => {
+            parameters.heartSize = parseFloat(e.target.value);
+            generateHearts();
+        });
+
+        document.getElementById('centerHeartSize').addEventListener('input', (e) => {
+            parameters.centerHeartSize = parseFloat(e.target.value);
+            generateHearts();
+        });
+
+        document.getElementById('heartSpeed').addEventListener('input', (e) => {
+            parameters.autoRotateSpeed = parseFloat(e.target.value);
+            controls.autoRotateSpeed = parameters.autoRotateSpeed;
+        });
+
+        document.getElementById('starBrightness').addEventListener('input', (e) => {
+            parameters.starOpacity = parseFloat(e.target.value);
+            starfield.material.opacity = parameters.starOpacity;
+        });
+
+        document.getElementById('textOpacity').addEventListener('input', (e) => {
+            parameters.textOpacity = parseFloat(e.target.value);
+            textSprites.forEach(s => s.material.opacity = parameters.textOpacity);
+        });
+
+        document.getElementById('autoRotateToggle').addEventListener('change', (e) => {
+            parameters.autoRotate = e.target.checked;
+            controls.autoRotate = parameters.autoRotate;
+        });
+
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                parameters.insideColor = option.dataset.color;
+                parameters.outsideColor = option.dataset.color;
+                generateHearts();
+            });
+        });
+
+        const clock = new THREE.Clock();
+        const tick = () => {
+            const elapsedTime = clock.getElapsedTime();
+            controls.update();
+
+            textSprites.forEach(sprite => sprite.lookAt(camera.position));
+            heartStructures.forEach(heart => heart.lookAt(camera.position));
+            if (centerHeart) centerHeart.lookAt(camera.position);
+            heartCoreSystems.forEach((core, index) => {
+                if (heartStructures[index]) {
+                    core.position.copy(heartStructures[index].position);
+                    core.lookAt(camera.position);
+                }
+            });
+            heartTexts.forEach((text, index) => {
+                if (heartStructures[index]) {
+                    text.position.copy(heartStructures[index].position);
+                    text.lookAt(camera.position);
+                }
+            });
+            if (nucleusParticles) nucleusParticles.lookAt(camera.position);
+
+            const starGeometry = starfield.geometry;
+            const starSizes = starGeometry.attributes.size.array;
+            for (let i = 0; i < starSizes.length; i++) {
+                const pulse = Math.sin(elapsedTime * 0.5 + i * 0.01) * 0.2 + 0.8;
+                starSizes[i] = (0.2 + Math.random() * 0.4) * pulse;
+            }
+            starGeometry.attributes.size.needsUpdate = true;
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        };
+
+        tick();
+    </script>
+
+
+
+
+    <audio id="bg-music" loop="" autoplay="">
+        <source src="https://github.com/Gon-p/G-/raw/refs/heads/main/adore%20-%20_did%20i%20tell%20u%20that%20i%20miss%20u_%20(lyric%20video).m4a" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const audio = document.getElementById('bg-music');
+            
+            // Configurar audio
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log("La reproducción automática no está permitida"));
+
+ document.addEventListener('click', function() {
+                audio.play().catch(e => console.log("Audio no pudo reproducirse"));
+            }, { once: true });
+        });
+    </script>
+
+
+
+    <div class="heart" style="left: 97.8724%; top: 30.9928%; font-size: 25.1923px; animation-delay: 0.983389s;">👑</div><div class="heart" style="left: 45.7508%; top: 39.886%; font-size: 30.5393px; animation-delay: 13.1752s;">👸</div><div class="heart" style="left: 44.5475%; top: 8.78083%; font-size: 31.6304px; animation-delay: 8.94447s;">❇</div><div class="heart" style="left: 46.6939%; top: 16.3334%; font-size: 34.9185px; animation-delay: 12.0098s;">️T</div><div class="heart" style="left: 30.2174%; top: 72.7136%; font-size: 16.7801px; animation-delay: 8.7673s;">👑</div><div class="heart" style="left: 39.7784%; top: 61.8336%; font-size: 35.5942px; animation-delay: 13.4739s;">👑</div><div class="heart" style="left: 2.32665%; top: 63.4101%; font-size: 20.2336px; animation-delay: 12.027s;">💛</div><div class="heart" style="left: 1.44778%; top: 63.4518%; font-size: 20.5587px; animation-delay: 7.80495s;">️T</div><div class="heart" style="left: 76.4482%; top: 64.4147%; font-size: 26.1039px; animation-delay: 7.98206s;">👸</div><div class="heart" style="left: 43.9232%; top: 48.1286%; font-size: 22.4597px; animation-delay: 12.7322s;">👸</div><div class="heart" style="left: 5.23481%; top: 65.087%; font-size: 20.4798px; animation-delay: 4.12762s;">😘</div><div class="heart" style="left: 68.199%; top: 63.0863%; font-size: 31.2872px; animation-delay: 14.1953s;">👑</div><div class="heart" style="left: 10.5617%; top: 78.6612%; font-size: 35.2289px; animation-delay: 7.80772s;">💛</div><div class="heart" style="left: 3.57756%; top: 98.3088%; font-size: 28.9189px; animation-delay: 10.0405s;">💜</div><div class="heart" style="left: 46.0837%; top: 54.6476%; font-size: 34.6393px; animation-delay: 6.41922s;">😘</div><div class="heart" style="left: 45.2069%; top: 76.6686%; font-size: 29.0378px; animation-delay: 7.64352s;">💜</div><div class="heart" style="left: 10.2467%; top: 26.3865%; font-size: 18.2059px; animation-delay: 9.72153s;">🌷</div><div class="heart" style="left: 87.1923%; top: 40.0101%; font-size: 20.3905px; animation-delay: 0.167659s;">👑</div><div class="heart" style="left: 37.3668%; top: 35.4276%; font-size: 27.5259px; animation-delay: 0.0173474s;">💜</div><div class="heart" style="left: 83.1846%; top: 23.2321%; font-size: 21.5807px; animation-delay: 1.21103s;">️T</div><div class="heart" style="left: 64.0732%; top: 98.7052%; font-size: 27.3861px; animation-delay: 0.699809s;">💛</div><div class="heart" style="left: 94.0198%; top: 60.6443%; font-size: 18.1981px; animation-delay: 4.85757s;">👸</div><div class="heart" style="left: 23.2078%; top: 37.2817%; font-size: 21.9254px; animation-delay: 6.89648s;">👸</div><div class="heart" style="left: 83.2063%; top: 97.1717%; font-size: 21.9067px; animation-delay: 8.55648s;">👸</div><div class="heart" style="left: 21.3783%; top: 48.8633%; font-size: 28.9907px; animation-delay: 14.6484s;">🌷</div><div class="heart" style="left: 73.0344%; top: 47.157%; font-size: 34.751px; animation-delay: 7.71319s;">👸</div><div class="heart" style="left: 50.2974%; top: 70.3683%; font-size: 30.0779px; animation-delay: 3.69144s;">️T</div><div class="heart" style="left: 35.4537%; top: 91.5707%; font-size: 21.1214px; animation-delay: 13.2466s;">👸</div><div class="heart" style="left: 97.4011%; top: 18.3441%; font-size: 29.5084px; animation-delay: 5.69764s;">😘</div><div class="heart" style="left: 54.2219%; top: 74.7006%; font-size: 19.7939px; animation-delay: 9.35629s;">👸</div><div class="heart" style="left: 47.7311%; top: 32.2967%; font-size: 28.3917px; animation-delay: 11.4381s;">😘</div><div class="heart" style="left: 49.1381%; top: 88.5308%; font-size: 17.5879px; animation-delay: 10.325s;">💛</div><div class="heart" style="left: 30.7414%; top: 13.0567%; font-size: 21.8531px; animation-delay: 1.32878s;">👑</div><div class="heart" style="left: 30.1344%; top: 71.8446%; font-size: 21.0836px; animation-delay: 10.3094s;">😘</div><div class="heart" style="left: 8.39511%; top: 87.6206%; font-size: 28.6629px; animation-delay: 12.1509s;">❇</div><div class="heart" style="left: 17.0095%; top: 32.7786%; font-size: 24.5153px; animation-delay: 9.41451s;">❇</div><div class="heart" style="left: 85.5611%; top: 54.0013%; font-size: 30.3687px; animation-delay: 1.88573s;">👑</div><div class="heart" style="left: 4.85144%; top: 15.3207%; font-size: 22.5047px; animation-delay: 6.04169s;">💜</div><div class="heart" style="left: 19.7773%; top: 97.9272%; font-size: 31.5473px; animation-delay: 6.59679s;">🌷</div><div class="heart" style="left: 67.8025%; top: 33.9984%; font-size: 31.4869px; animation-delay: 2.23907s;">👸</div><div class="heart" style="left: 63.5198%; top: 53.9693%; font-size: 35.0657px; animation-delay: 4.75198s;">💜</div><div class="heart" style="left: 74.2705%; top: 64.4742%; font-size: 28.7095px; animation-delay: 2.04836s;">👑</div><div class="heart" style="left: 92.2503%; top: 10.9814%; font-size: 21.2672px; animation-delay: 11.0347s;">🌷</div><div class="heart" style="left: 74.1263%; top: 36.6316%; font-size: 32.0964px; animation-delay: 11.9112s;">🌷</div><div class="heart" style="left: 11.8137%; top: 68.3392%; font-size: 23.5388px; animation-delay: 14.0772s;">❇</div><div class="heart" style="left: 63.824%; top: 96.7818%; font-size: 29.5678px; animation-delay: 6.43468s;">❇</div><div class="heart" style="left: 24.9493%; top: 64.0483%; font-size: 27.2324px; animation-delay: 11.642s;">💜</div><div class="heart" style="left: 36.0839%; top: 7.9843%; font-size: 32.6164px; animation-delay: 0.44313s;">🌷</div><div class="heart" style="left: 60.6073%; top: 93.8281%; font-size: 34.2379px; animation-delay: 0.749469s;">👸</div><div class="heart" style="left: 63.6339%; top: 62.0784%; font-size: 35.0947px; animation-delay: 5.80882s;">👑</div><div class="heart" style="left: 49.8943%; top: 17.7587%; font-size: 16.2679px; animation-delay: 12.8239s;">💛</div><div class="heart" style="left: 88.0129%; top: 55.053%; font-size: 34.8729px; animation-delay: 6.47849s;">🌷</div><div class="heart" style="left: 14.2506%; top: 63.0605%; font-size: 29.6678px; animation-delay: 4.65486s;">👸</div><div class="heart" style="left: 74.2023%; top: 80.7119%; font-size: 31.0581px; animation-delay: 2.42841s;">❇</div><div class="heart" style="left: 10.894%; top: 78.481%; font-size: 17.1164px; animation-delay: 2.00945s;">❇</div><div class="heart" style="left: 6.36428%; top: 19.4766%; font-size: 20.8088px; animation-delay: 9.23238s;">👑</div><div class="heart" style="left: 14.0117%; top: 68.6761%; font-size: 18.3998px; animation-delay: 2.54833s;">❇</div><div class="heart" style="left: 62.2577%; top: 62.1528%; font-size: 33.1866px; animation-delay: 7.05902s;">👸</div><div class="heart" style="left: 23.7657%; top: 62.7949%; font-size: 27.0141px; animation-delay: 9.04633s;">👑</div><div class="heart" style="left: 37.2619%; top: 84.0435%; font-size: 32.893px; animation-delay: 9.18604s;">️T</div></body></html>
